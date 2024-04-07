@@ -1,10 +1,7 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
-	import Card from '$lib/components/ui/card/card.svelte';
-
 
 	export let data;
-Card.
 </script>
 
 <button on:click={() => console.log(data)}>Print Data</button>
