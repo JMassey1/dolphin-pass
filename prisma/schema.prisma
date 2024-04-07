@@ -12,3 +12,68 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  username     String    @unique
+  password     String
+  isVerified   Boolean   @default(false)
+  userPodIds   String[]  @db.ObjectId
+  userPods     UserPod[] @relation(fields: [userPodIds], references: [id])
+  seenEchoIds  String[]  @db.ObjectId
+  seenEchoes   Echo[]    @relation("seenBy", fields: [seenEchoIds], references: [id])
+  ownedEchoIds String[]  @db.ObjectId
+  ownedEchoes  Echo[]    @relation("owner")
+  // sessions   Session[]
+}
+
+/// TODO: figure out session shit (auth.js ?)
+// model Session {
+//   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+//   userId    String   @db.ObjectId
+//   user      User     @relation(fields: [userId], references: [id])
+//   expiresAt DateTime
+//   createdAt DateTime @default(now())
+// }
+
+/// A Pod is a group of users that can share passwords with eachother
+model Pod {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  userPodIds  String[]  @db.ObjectId
+  userPods    UserPod[] @relation(fields: [userPodIds], references: [id])
+  echoIds     String[]  @db.ObjectId
+  echoes      Echo[]
+}
+
+model UserPod {
+  id      String      @id @default(auto()) @map("_id") @db.ObjectId
+  userIds String[]    @db.ObjectId
+  users   User[]      @relation(fields: [userIds], references: [id])
+  podIds  String[]    @db.ObjectId
+  pods    Pod[]       @relation(fields: [podIds], references: [id])
+  type    UserPodType
+}
+
+enum UserPodType {
+  STANDARD
+  INVITED
+  ADMIN
+}
+
+model Echo {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId     String    @db.ObjectId
+  owner       User      @relation("owner", fields: [ownerId], references: [id])
+  podId       String    @db.ObjectId
+  pod         Pod       @relation(fields: [podId], references: [id])
+  title       String
+  description String
+  username    String
+  password    String
+  seenByIds   String[]  @db.ObjectId
+  seenBy      User[]    @relation("seenBy", fields: [seenByIds], references: [id])
+  createdDate DateTime
+  expiration  DateTime?
+}
