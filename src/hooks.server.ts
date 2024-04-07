@@ -7,6 +7,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (!sessionId) {
 		event.locals.user = null;
 		event.locals.session = null;
+		event.locals.isLoggedIn = false;
 		return resolve(event);
 	}
 
@@ -27,7 +28,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 			...sessionCookie.attributes
 		});
 	}
+
 	event.locals.user = user;
 	event.locals.session = session;
+	event.locals.isLoggedIn = !!user;
 	return resolve(event);
 };

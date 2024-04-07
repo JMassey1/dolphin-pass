@@ -1,9 +1,28 @@
 const ErrorTypes = {
-	SIGNUP_BAD_USERNAME: 'signup_bad_username',
-	SIGNUP_BAD_PASSWORD: 'signup_bad_password',
-	SIGNUP_USERNAME_TAKEN: 'signup_username_taken',
-	LOGIN_BAD_CREDENTIALS: 'login_bad_credentials',
-	INTERNAL_ERROR: 'internal_error'
+	SIGNUP_BAD_USERNAME: {
+		message: 'Username is formatted incorrectly.'
+	},
+	SIGNUP_BAD_PASSWORD: {
+		message: 'Password is formatted incorrectly.'
+	},
+	SIGNUP_USERNAME_TAKEN: {
+		message: 'Username is already taken.'
+	},
+	SIGNUP_PASSWORDS_DO_NOT_MATCH: {
+		message: 'Passwords do not match.'
+	},
+	LOGIN_BAD_CREDENTIALS: {
+		message: 'Incorrect username or password.'
+	},
+	NO_LOGIN: {
+		message: 'User not logged in.'
+	},
+	USER_NOT_FOUND: {
+		message: 'User not found.'
+	},
+	INTERNAL_ERROR: {
+		message: 'Internal server error.'
+	}
 } as const;
 
 export default ErrorTypes;

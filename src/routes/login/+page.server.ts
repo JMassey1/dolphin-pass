@@ -6,33 +6,28 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
 export const actions: Actions = {
-	default: async (event) => {
+	login: async (event) => {
 		const formData = await event.request.formData();
 		const username = formData.get('username');
 		const password = formData.get('password');
 
-		console.log(`username: ${username}, password: ${password}`);
-
+		// Exists for type narrowing for username and password
 		if (
 			typeof username !== 'string' ||
 			username.length < 3 ||
 			username.length > 31 ||
-			!/^[a-z0-9_-]+$/.test(username)
+			!/^[a-z0-9_-]+$/.test(username) ||
+			typeof password !== 'string' ||
+			password.length < 2 ||
+			password.length > 255
 		) {
 			return fail(400, {
-				message: 'Invalid username',
-				type: ErrorTypes.SIGNUP_BAD_USERNAME
-			});
-		}
-		if (typeof password !== 'string' || password.length < 2 || password.length > 255) {
-			return fail(400, {
-				message: 'Invalid password',
-				type: ErrorTypes.SIGNUP_BAD_PASSWORD
+				message: 'Invalid Credentials',
+				type: ErrorTypes.LOGIN_BAD_CREDENTIALS
 			});
 		}
 
 		const existingUser = await prisma.user.findUnique({ where: { username } });
-		console.log(existingUser);
 		if (!existingUser) {
 			// NOTE:
 			// Returning immediately allows malicious actors to figure out valid usernames from response times,
@@ -47,9 +42,14 @@ export const actions: Actions = {
 				message: 'Incorrect username or password',
 				type: ErrorTypes.LOGIN_BAD_CREDENTIALS
 			});
+		} else {
+			existingUser.lastLoggedIn = new Date();
+			await prisma.user.update({
+				where: { id: existingUser.id },
+				data: { lastLoggedIn: existingUser.lastLoggedIn }
+			});
 		}
-		console.log(`hashed_password: ${existingUser.hashed_password}`);
-		console.log(`password: ${password}`);
+
 		let validPassword;
 		try {
 			validPassword = await Bun.password.verify(password, existingUser.hashed_password);
