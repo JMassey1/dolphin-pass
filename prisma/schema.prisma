@@ -14,17 +14,25 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(auto()) @map("_id") @db.ObjectId
-  username     String    @unique
-  password     String
-  isVerified   Boolean   @default(false)
-  userPodIds   String[]  @db.ObjectId
-  userPods     UserPod[] @relation(fields: [userPodIds], references: [id])
-  seenEchoIds  String[]  @db.ObjectId
-  seenEchoes   Echo[]    @relation("seenBy", fields: [seenEchoIds], references: [id])
-  ownedEchoIds String[]  @db.ObjectId
-  ownedEchoes  Echo[]    @relation("owner")
-  // sessions   Session[]
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  username        String    @unique
+  hashed_password String
+  isVerified      Boolean   @default(false)
+  userPodIds      String[]  @db.ObjectId
+  userPods        UserPod[] @relation(fields: [userPodIds], references: [id])
+  seenEchoIds     String[]  @db.ObjectId
+  seenEchoes      Echo[]    @relation("seenBy", fields: [seenEchoIds], references: [id])
+  ownedEchoIds    String[]  @db.ObjectId
+  ownedEchoes     Echo[]    @relation("owner")
+  sessions        Session[]
+}
+
+model Session {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }
 
 /// TODO: figure out session shit (auth.js ?)

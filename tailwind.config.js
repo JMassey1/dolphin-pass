@@ -17,6 +17,24 @@ const config = {
 				'2xl': '1400px'
 			}
 		},
+		colors: {
+			dolphin: {
+				50: '#f2f8fd',
+				100: '#e4effa',
+				200: '#c3dff4',
+				300: '#8fc5ea',
+				400: '#52a6de',
+				500: '#2981bc',
+				600: '#1d6eac',
+				700: '#19598b',
+				800: '#184c74',
+				900: '#1a4060',
+				950: '#112940'
+			}
+		},
+		fontFamily: {
+			sans: ['Roboto', 'sans-serif']
+		},
 		extend: {
 			colors: {
 				border: 'hsl(var(--border) / <alpha-value>)',
