@@ -6,11 +6,8 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
-	if (!event.locals.user) {
-		return fail(400, {
-			message: ErrorTypes.NO_LOGIN.message,
-			type: ErrorTypes.NO_LOGIN
-		});
+	if (!event.locals.isLoggedIn) {
+		redirect(302, '/login');
 	}
 	const podId = event.params.podId;
 	const pod = await prisma.pod.findUnique({

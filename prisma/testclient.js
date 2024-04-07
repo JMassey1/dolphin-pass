@@ -31,27 +31,30 @@ async function main() {
 	// 	}
 	// });
 
-	await prisma.pod
-		.create({
-			data: {
-				name: "hank's pod",
-				description: 'welcome to my pod',
-				userPods: {
-					create: {
-						users: {
-							connect: {
-								username: 'hankdog'
-							}
-						},
-						type: UserPodType.STANDARD
-					}
-				}
-			}
-		})
-		.then(() => {
-			console.log('pod created');
-		});
+	const new_pod = await prisma.pod.create({
+		data: {
+			name: "jordan's pod",
+			description: 'welcome to my pod'
+		}
+	});
+	console.log(new_pod);
+	console.log('----------------------------------');
 
+	await prisma.userPod.create({
+		data: {
+			user: {
+				connect: {
+					username: 'jordan'
+				}
+			},
+			pod: {
+				connect: {
+					id: new_pod.id
+				}
+			},
+			type: UserPodType.ADMIN
+		}
+	});
 	// await prisma.userPod.create({
 	// 	data: {
 	// 		users: {

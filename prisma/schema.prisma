@@ -38,7 +38,7 @@ model Session {
 
 /// A Pod is a group of users that can share passwords with eachother
 model Pod {
-  id          String    @id @map("_id") @default(cuid())
+  id          String    @id @map("_id") @default(cuid()) @db.ObjectId
   name        String
   description String
   userPodIds  String[] 
@@ -48,11 +48,11 @@ model Pod {
 }
 
 model UserPod {
-  id      String      @id @map("_id") @default(cuid())
+  id      String      @id @map("_id") @default(cuid()) @db.ObjectId
   userId  String      
-  user    User        @relation(fields: [userId], references: [id])
+  user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   podId   String      
-  pod     Pod         @relation(fields: [podId], references: [id])
+  pod     Pod         @relation(fields: [podId], references: [id], onDelete: Cascade)
   type    UserPodType
 }
 
@@ -67,7 +67,7 @@ model Echo {
   ownerId     String    
   owner       User      @relation("owner", fields: [ownerId], references: [id])
   podId       String    
-  pod         Pod       @relation(fields: [podId], references: [id])
+  pod         Pod       @relation(fields: [podId], references: [id], onDelete: Cascade)
   title       String
   description String
   username    String

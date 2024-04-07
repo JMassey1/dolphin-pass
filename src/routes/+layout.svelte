@@ -37,7 +37,7 @@
 						>
 					</DropdownHeader>
 					<DropdownItem>
-						<form method="post" use:enhance>
+						<form method="post" use:enhance action="/login?/logout">
 							<button type="submit" class="w-full text-left">Logout</button>
 						</form>
 					</DropdownItem>

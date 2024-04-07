@@ -1,15 +1,25 @@
 <script lang="ts">
-	import {
-		Table,
-		TableBody,
-		TableBodyCell,
-		TableBodyRow,
-		TableHead,
-		TableHeadCell
-	} from 'flowbite-svelte';
+	import * as Card from '$lib/components/ui/card';
+	import Card from '$lib/components/ui/card/card.svelte';
+
+
+	export let data;
+Card.
 </script>
 
-<Table striped={true}>
+<button on:click={() => console.log(data)}>Print Data</button>
+
+{#each data.pods as pod}
+	<Card.Root>
+		<Card.Header>
+			<Card.Title>{pod.name}</Card.Title>
+			<Card.Description>{pod.description}</Card.Description>
+		</Card.Header>
+		<Card.Content></Card.Content>
+	</Card.Root>
+{/each}
+
+<!-- <Table striped={true}>
 	<TableHead>
 		<TableHeadCell>Product name</TableHeadCell>
 		<TableHeadCell>Color</TableHeadCell>
@@ -76,4 +86,4 @@
 			</TableBodyCell>
 		</TableBodyRow>
 	</TableBody>
-</Table>
+</Table> -->
