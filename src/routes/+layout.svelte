@@ -14,20 +14,23 @@
 	import '../app.pcss';
 	import type { LayoutData } from './$types';
 
+	import brandImage from '$lib/images/dolphin_logo.png';
+	import avatarImage from '$lib/images/pfp.jpg';
+
 	export let data: LayoutData;
 </script>
 
 <div class="">
 	<Navbar class="start-0 w-full border-b px-8 py-2.5 sm:px-4" fluid={true} color="blue">
 		<NavBrand href="/">
-			<img src="images/dolphin_logo.png" alt="Dolphin logo" class="me-3 h-6 sm:h-9" />
+			<img src={brandImage} alt="Dolphin logo" class="me-3 h-6 sm:h-9" />
 			<span class="self-center whitespace-nowrap text-xl font-bold dark:text-white"
 				>DolphinPass</span
 			>
 		</NavBrand>
 		<div class="flex space-x-4 md:order-2">
 			{#if data?.isLoggedIn}
-				<Avatar id="avatar-menu" src="images/pfp.jpg" alt="User avatar" class="cursor-pointer" />
+				<Avatar id="avatar-menu" src={avatarImage} alt="User avatar" class="cursor-pointer" />
 				<NavHamburger />
 				<Dropdown placement="bottom-start" triggeredBy="#avatar-menu" class="z-20 mr-4">
 					<DropdownHeader>
