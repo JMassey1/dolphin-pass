@@ -46,7 +46,7 @@
 		</div>
 	</Navbar>
 	<Toaster position="bottom-right" closeButton />
-	<div class="overflow-scroll px-16 pb-16">
+	<div class="overflow-auto px-16 pb-16">
 		<slot />
 	</div>
 </div>
