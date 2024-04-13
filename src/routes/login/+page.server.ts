@@ -2,8 +2,13 @@ import prisma from '$lib/prisma';
 import { lucia } from '$lib/server/auth';
 import ErrorTypes from '$lib/utils/errorTypes';
 import { fail, redirect } from '@sveltejs/kit';
+import type { Actions, PageServerLoad } from './$types';
 
-import type { Actions } from './$types';
+export const load: PageServerLoad = async (event) => {
+	if (event.locals.isLoggedIn) {
+		redirect(302, '/');
+	}
+};
 
 export const actions: Actions = {
 	login: async (event) => {
